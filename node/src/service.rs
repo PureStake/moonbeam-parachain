@@ -60,7 +60,7 @@ pub fn new_partial(
 		crate::service::Executor,
 	>(&config)?;
 	let client = Arc::new(client);
-	//let select_chain = sc_consensus::LongestChain::new(backend.clone());
+	let select_chain = sc_consensus::LongestChain::new(backend.clone());
 
 	let registry = config.prometheus_registry();
 
@@ -79,6 +79,30 @@ pub fn new_partial(
 		&task_manager.spawn_handle(),
 		registry.clone(),
 	)?;
+
+	let is_authority = config.role.is_authority();
+
+	// Channel for the rpc handler to communicate with the authorship task.
+	let (command_sink, commands_stream) = futures::channel::mpsc::channel(1000);
+
+	let rpc_extensions_builder = {
+		let client = client.clone();
+		let pool = transaction_pool.clone();
+		let select_chain = select_chain.clone();
+
+		Box::new(move |deny_unsafe| {
+			let deps = crate::rpc::FullDeps {
+				client: client.clone(),
+				pool: pool.clone(),
+				select_chain: select_chain.clone(),
+				deny_unsafe,
+				is_authority,
+				command_sink: Some(command_sink.clone())
+			};
+
+			crate::rpc::create_full(deps)
+		})
+	};
 
 	let params = PartialComponents {
 		backend,

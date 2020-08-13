@@ -3,13 +3,14 @@
 use cumulus_primitives::ParaId;
 use parachain_runtime::{
 	AccountId, BalancesConfig, GenesisConfig, Signature, SudoConfig, SystemConfig,
-	ParachainInfoConfig, WASM_BINARY,
+	ParachainInfoConfig, WASM_BINARY, EVMConfig, EthereumConfig,
 };
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use sc_service::ChainType;
 use serde::{Deserialize, Serialize};
 use sp_core::{sr25519, Pair, Public};
 use sp_runtime::traits::{IdentifyAccount, Verify};
+use std::collections::BTreeMap;
 
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
@@ -126,5 +127,9 @@ fn testnet_genesis(
 		}),
 		pallet_sudo: Some(SudoConfig { key: root_key }),
 		parachain_info: Some(ParachainInfoConfig { parachain_id: id }),
+		evm: Some(EVMConfig {
+			accounts: BTreeMap::new(),
+		}),
+		ethereum: Some(EthereumConfig {}),
 	}
 }
