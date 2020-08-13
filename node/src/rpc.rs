@@ -61,9 +61,9 @@ pub struct FullDeps<C, P, SC> {
 }
 
 /// Instantiate all Full RPC extensions.
-pub fn create_full<C, P, M, SC, BE>(
+pub fn create_full<C, P, SC, BE>(
 	deps: FullDeps<C, P, SC>,
-) -> jsonrpc_core::IoHandler<M> where
+) -> jsonrpc_core::IoHandler<sc_rpc::Metadata> where
 	BE: Backend<Block> + 'static,
 	BE::State: StateBackend<BlakeTwo256>,
 	C: ProvideRuntimeApi<Block> + StorageProvider<Block, BE>,
@@ -75,7 +75,6 @@ pub fn create_full<C, P, M, SC, BE>(
 	C::Api: frontier_rpc_primitives::EthereumRuntimeApi<Block>,
 	<C::Api as sp_api::ApiErrorExt>::Error: fmt::Debug,
 	P: TransactionPool<Block=Block> + 'static,
-	M: jsonrpc_core::Metadata + Default,
 	SC: SelectChain<Block> +'static,
 {
 	use substrate_frame_rpc_system::{FullSystem, SystemApi};
