@@ -35,6 +35,7 @@ sp-consensus = { git = "https://github.com/paritytech/substrate", branch = "roco
 sc-consensus = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 sc-cli = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 sc-client-api = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
+sc-client-db = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 sc-executor = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 sc-service = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 sc-transaction-pool = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }

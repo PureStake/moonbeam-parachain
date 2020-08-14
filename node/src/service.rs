@@ -13,7 +13,8 @@ use sc_service::{Configuration, PartialComponents, Role, TFullBackend, TFullClie
 use sp_runtime::traits::BlakeTwo256;
 use sp_trie::PrefixedMemoryDB;
 use std::sync::Arc;
-
+use sc_consensus::LongestChain;
+use sc_client_db::Backend;
 // Our native executor instance.
 native_executor_instance!(
 	pub Executor,
@@ -35,7 +36,10 @@ pub fn new_partial(
 			crate::service::Executor,
 		>,
 		TFullBackend<parachain_runtime::opaque::Block>,
-		(),
+		LongestChain<
+			Backend<parachain_runtime::opaque::Block>,
+			parachain_runtime::opaque::Block
+		>,
 		sp_consensus::import_queue::BasicQueue<
 			parachain_runtime::opaque::Block,
 			PrefixedMemoryDB<BlakeTwo256>,
@@ -80,30 +84,6 @@ pub fn new_partial(
 		registry.clone(),
 	)?;
 
-	let is_authority = config.role.is_authority();
-
-	// Channel for the rpc handler to communicate with the authorship task.
-	let (command_sink, commands_stream) = futures::channel::mpsc::channel(1000);
-
-	let rpc_extensions_builder = {
-		let client = client.clone();
-		let pool = transaction_pool.clone();
-		let select_chain = select_chain.clone();
-
-		Box::new(move |deny_unsafe| {
-			let deps = crate::rpc::FullDeps {
-				client: client.clone(),
-				pool: pool.clone(),
-				select_chain: select_chain.clone(),
-				deny_unsafe,
-				is_authority,
-				command_sink: Some(command_sink.clone())
-			};
-
-			crate::rpc::create_full(deps)
-		})
-	};
-
 	let params = PartialComponents {
 		backend,
 		client,
@@ -112,7 +92,7 @@ pub fn new_partial(
 		task_manager,
 		transaction_pool,
 		inherent_data_providers,
-		select_chain: (),
+		select_chain: select_chain,
 		other: (),
 	};
 
@@ -171,6 +151,7 @@ pub fn run_node(
 	let transaction_pool = params.transaction_pool.clone();
 	let mut task_manager = params.task_manager;
 	let import_queue = params.import_queue;
+	let select_chain = params.select_chain;
 	let (network, network_status_sinks, system_rpc_tx, start_network) =
 		sc_service::build_network(sc_service::BuildNetworkParams {
 				config: &parachain_config,
@@ -184,10 +165,34 @@ pub fn run_node(
 				finality_proof_provider: None,
 		})?;
 
+	let is_authority = parachain_config.role.is_authority();
+
+	// Channel for the rpc handler to communicate with the authorship task.
+	let (command_sink, commands_stream) = futures::channel::mpsc::channel(1000);
+
+	let rpc_extensions_builder = {
+		let client = client.clone();
+		let pool = transaction_pool.clone();
+		let select_chain = select_chain.clone();
+
+		Box::new(move |deny_unsafe| {
+			let deps = crate::rpc::FullDeps {
+				client: client.clone(),
+				pool: pool.clone(),
+				select_chain: select_chain.clone(),
+				deny_unsafe,
+				is_authority,
+				command_sink: Some(command_sink.clone())
+			};
+
+			crate::rpc::create_full(deps)
+		})
+	};
+
 	sc_service::spawn_tasks(sc_service::SpawnTasksParams {
 		on_demand: None,
 		remote_blockchain: None,
-		rpc_extensions_builder: Box::new(|_| ()),
+		rpc_extensions_builder: rpc_extensions_builder,
 		client: client.clone(),
 		transaction_pool: transaction_pool.clone(),
 		task_manager: &mut task_manager,
