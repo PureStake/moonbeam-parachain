@@ -11,7 +11,7 @@ use sp_api::impl_runtime_apis;
 use sp_core::{OpaqueMetadata, U256, H160, H256};
 use sp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
-	traits::{BlakeTwo256, NumberFor, Block as BlockT, IdentifyAccount, IdentityLookup, Saturating, Verify},
+	traits::{BlakeTwo256, Block as BlockT, IdentifyAccount, IdentityLookup, Saturating, Verify},
 	transaction_validity::{TransactionSource, TransactionValidity},
 	ApplyExtrinsicResult, MultiSignature,
 };
@@ -300,7 +300,7 @@ impl frontier_rpc_primitives::ConvertTransaction<opaque::UncheckedExtrinsic> for
 pub struct EthereumFindAuthor<F>(PhantomData<F>);
 impl<F: FindAuthor<u32>> FindAuthor<H160> for EthereumFindAuthor<F>
 {
-	fn find_author<'a, I>(digests: I) -> Option<H160> where
+	fn find_author<'a, I>(_digests: I) -> Option<H160> where
 		I: 'a + IntoIterator<Item=(ConsensusEngineId, &'a [u8])>
 	{
 		None
