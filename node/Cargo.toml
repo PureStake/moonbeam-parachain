@@ -1,12 +1,15 @@
 [package]
-name = 'parachain-collator'
+name = 'moonbase-testnet'
+description = 'Moonbase Parachain Collator'
+homepage = 'https://moonbeam.network'
+license = 'Unlicense'
 version = '0.1.0'
-authors = ["Parity Technologies <admin@parity.io>"]
+authors = ["PureStake"]
 build = 'build.rs'
 edition = '2018'
 
 [[bin]]
-name = 'parachain-collator'
+name = 'moonbase-testnet'
 path = 'src/main.rs'
 
 [dependencies]
@@ -23,7 +26,7 @@ serde = { version = "1.0.101", features = ["derive"] }
 jsonrpc-core = "14.0.3"
 
 # Parachain dependencies
-parachain-runtime = { path = "../runtime" }
+moonbase-runtime = { path = "../runtime" }
 
 # Substrate dependencies
 sp-runtime = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-branch" }
