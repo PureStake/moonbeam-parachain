@@ -1,7 +1,10 @@
 [package]
-name = 'parachain-runtime'
+name = 'moonbase-runtime'
+description = 'Moonbase Parachain Collator Runtime'
+homepage = 'https://moonbeam.network'
+license = 'Unlicense'
 version = '0.1.0'
-authors = ["Parity Technologies <admin@parity.io>"]
+authors = ["PureStake"]
 edition = '2018'
 
 [dependencies]
