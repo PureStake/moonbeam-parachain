@@ -18,8 +18,8 @@ use sc_client_db::Backend;
 // Our native executor instance.
 native_executor_instance!(
 	pub Executor,
-	parachain_runtime::api::dispatch,
-	parachain_runtime::native_version,
+	moonbase_runtime::api::dispatch,
+	moonbase_runtime::native_version,
 );
 
 /// Starts a `ServiceBuilder` for a full service.
@@ -31,24 +31,24 @@ pub fn new_partial(
 ) -> Result<
 	PartialComponents<
 		TFullClient<
-			parachain_runtime::opaque::Block,
-			parachain_runtime::RuntimeApi,
+			moonbase_runtime::opaque::Block,
+			moonbase_runtime::RuntimeApi,
 			crate::service::Executor,
 		>,
-		TFullBackend<parachain_runtime::opaque::Block>,
+		TFullBackend<moonbase_runtime::opaque::Block>,
 		LongestChain<
-			Backend<parachain_runtime::opaque::Block>,
-			parachain_runtime::opaque::Block
+			Backend<moonbase_runtime::opaque::Block>,
+			moonbase_runtime::opaque::Block
 		>,
 		sp_consensus::import_queue::BasicQueue<
-			parachain_runtime::opaque::Block,
+			moonbase_runtime::opaque::Block,
 			PrefixedMemoryDB<BlakeTwo256>,
 		>,
 		sc_transaction_pool::FullPool<
-			parachain_runtime::opaque::Block,
+			moonbase_runtime::opaque::Block,
 			TFullClient<
-				parachain_runtime::opaque::Block,
-				parachain_runtime::RuntimeApi,
+				moonbase_runtime::opaque::Block,
+				moonbase_runtime::RuntimeApi,
 				crate::service::Executor,
 			>,
 		>,
@@ -59,8 +59,8 @@ pub fn new_partial(
 	let inherent_data_providers = sp_inherents::InherentDataProviders::new();
 
 	let (client, backend, keystore, task_manager) = sc_service::new_full_parts::<
-		parachain_runtime::opaque::Block,
-		parachain_runtime::RuntimeApi,
+		moonbase_runtime::opaque::Block,
+		moonbase_runtime::RuntimeApi,
 		crate::service::Executor,
 	>(&config)?;
 	let client = Arc::new(client);
@@ -112,8 +112,8 @@ pub fn run_node(
 	TaskManager,
 	Arc<
 		TFullClient<
-			parachain_runtime::opaque::Block,
-			parachain_runtime::RuntimeApi,
+			moonbase_runtime::opaque::Block,
+			moonbase_runtime::RuntimeApi,
 			crate::service::Executor,
 		>,
 	>,

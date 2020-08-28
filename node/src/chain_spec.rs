@@ -1,7 +1,7 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
 
 use cumulus_primitives::ParaId;
-use parachain_runtime::{
+use moonbase_runtime::{
 	AccountId, BalancesConfig, GenesisConfig, Signature, SudoConfig, SystemConfig,
 	ParachainInfoConfig, WASM_BINARY, EVMConfig, EthereumConfig,
 };
@@ -51,7 +51,7 @@ where
 
 pub fn get_chain_spec(id: ParaId) -> ChainSpec {
 	ChainSpec::from_genesis(
-		"Local Testnet",
+		"Moonbase Parachain Local Testnet",
 		"local_testnet",
 		ChainType::Local,
 		move || {
@@ -87,7 +87,7 @@ pub fn get_chain_spec(id: ParaId) -> ChainSpec {
 
 pub fn staging_test_net(id: ParaId) -> ChainSpec {
 	ChainSpec::from_genesis(
-		"Staging Testnet",
+		"Moonbase Parachain Testnet",
 		"staging_testnet",
 		ChainType::Live,
 		move || {
