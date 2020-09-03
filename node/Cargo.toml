@@ -64,6 +64,7 @@ ethereum = { version = "0.1.0", package = "pallet-ethereum", path = "../vendor/f
 
 frontier-rpc = { version = "0.1.0", path = "../vendor/frontier/rpc" }
 frontier-rpc-primitives = { version = "0.1.0", path = "../vendor/frontier/rpc/primitives" }
+frontier-consensus = { version = "0.1.0", path = "../vendor/frontier/consensus" }
 
 # Cumulus dependencies
 cumulus-consensus = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }

@@ -15,12 +15,19 @@ use sp_trie::PrefixedMemoryDB;
 use std::sync::Arc;
 use sc_consensus::LongestChain;
 use sc_client_db::Backend;
+use frontier_consensus::FrontierBlockImport;
 // Our native executor instance.
 native_executor_instance!(
 	pub Executor,
 	moonbase_runtime::api::dispatch,
 	moonbase_runtime::native_version,
 );
+
+type FullClient = sc_service::TFullClient<
+	moonbase_runtime::opaque::Block,
+	moonbase_runtime::RuntimeApi,
+	crate::service::Executor
+>;
 
 /// Starts a `ServiceBuilder` for a full service.
 ///
@@ -52,7 +59,11 @@ pub fn new_partial(
 				crate::service::Executor,
 			>,
 		>,
-		(),
+		FrontierBlockImport<
+			moonbase_runtime::opaque::Block,
+			Arc<FullClient>,
+			FullClient
+		>,
 	>,
 	sc_service::Error,
 > {
@@ -76,9 +87,14 @@ pub fn new_partial(
 		client.clone(),
 	);
 
+	let frontier_block_import = FrontierBlockImport::new(
+		client.clone(),
+		client.clone()
+	);
+
 	let import_queue = cumulus_consensus::import_queue::import_queue(
 		client.clone(),
-		client.clone(),
+		frontier_block_import.clone(),
 		inherent_data_providers.clone(),
 		&task_manager.spawn_handle(),
 		registry.clone(),
@@ -93,7 +109,7 @@ pub fn new_partial(
 		transaction_pool,
 		inherent_data_providers,
 		select_chain: select_chain,
-		other: (),
+		other: frontier_block_import,
 	};
 
 	Ok(params)
@@ -151,6 +167,7 @@ pub fn run_node(
 	let transaction_pool = params.transaction_pool.clone();
 	let mut task_manager = params.task_manager;
 	let import_queue = params.import_queue;
+	let block_import = params.other;
 	let select_chain = params.select_chain;
 	let (network, network_status_sinks, system_rpc_tx, start_network) =
 		sc_service::build_network(sc_service::BuildNetworkParams {
@@ -216,7 +233,7 @@ pub fn run_node(
 
 		let params = StartCollatorParams {
 			para_id: id,
-			block_import: client.clone(),
+			block_import: block_import,
 			proposer_factory,
 			inherent_data_providers: params.inherent_data_providers,
 			block_status: client.clone(),

@@ -26,7 +26,7 @@ use sp_transaction_pool::TransactionPool;
 use sp_blockchain::{Error as BlockChainError, HeaderMetadata, HeaderBackend};
 use sp_consensus::SelectChain;
 use sc_rpc_api::DenyUnsafe;
-use sc_client_api::backend::{StorageProvider, Backend, StateBackend};
+use sc_client_api::backend::{StorageProvider, Backend, StateBackend, AuxStore};
 use sp_runtime::traits::BlakeTwo256;
 use sp_block_builder::BlockBuilder;
 
@@ -47,25 +47,26 @@ pub struct FullDeps<C, P, SC> {
 }
 
 /// Instantiate all Full RPC extensions.
-pub fn create_full<C, P, SC, BE>(
+pub fn create_full<C, P, M, SC, BE>(
 	deps: FullDeps<C, P, SC>,
-) -> jsonrpc_core::IoHandler<sc_rpc::Metadata> where
+) -> jsonrpc_core::IoHandler<M> where
 	BE: Backend<Block> + 'static,
 	BE::State: StateBackend<BlakeTwo256>,
-	C: ProvideRuntimeApi<Block> + StorageProvider<Block, BE>,
+	C: ProvideRuntimeApi<Block> + StorageProvider<Block, BE> + AuxStore,
 	C: HeaderBackend<Block> + HeaderMetadata<Block, Error=BlockChainError> + 'static,
 	C: Send + Sync + 'static,
 	C::Api: substrate_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>,
 	C::Api: BlockBuilder<Block>,
 	C::Api: pallet_transaction_payment_rpc::TransactionPaymentRuntimeApi<Block, Balance>,
-	C::Api: frontier_rpc_primitives::EthereumRuntimeApi<Block>,
+	C::Api: frontier_rpc_primitives::EthereumRuntimeRPCApi<Block>,
 	<C::Api as sp_api::ApiErrorExt>::Error: fmt::Debug,
 	P: TransactionPool<Block=Block> + 'static,
+	M: jsonrpc_core::Metadata + Default,
 	SC: SelectChain<Block> +'static,
 {
 	use substrate_frame_rpc_system::{FullSystem, SystemApi};
 	use pallet_transaction_payment_rpc::{TransactionPayment, TransactionPaymentApi};
-	use frontier_rpc::{EthApi, EthApiServer};
+	use frontier_rpc::{EthApi, EthApiServer, NetApi, NetApiServer};
 
 	let mut io = jsonrpc_core::IoHandler::default();
 	let FullDeps {
@@ -91,6 +92,9 @@ pub fn create_full<C, P, SC, BE>(
 			moonbase_runtime::TransactionConverter,
 			is_authority,
 		))
+	);
+	io.extend_with(
+		NetApiServer::to_delegate(NetApi)
 	);
 
 	match command_sink {
