@@ -1005,22 +1005,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cumulus-message-broker"
-version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
-dependencies = [
- "cumulus-primitives",
- "cumulus-upward-message",
- "frame-support 2.0.0-rc5",
- "frame-system 2.0.0-rc5",
- "parity-scale-codec",
- "sp-inherents 2.0.0-rc5",
- "sp-io 2.0.0-rc5",
- "sp-runtime 2.0.0-rc5",
- "sp-std 2.0.0-rc5",
-]
-
-[[package]]
 name = "cumulus-network"
 version = "0.1.0"
 source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
@@ -1128,6 +1112,7 @@ dependencies = [
  "cumulus-upward-message",
  "frame-support 2.0.0-rc5",
  "frame-system 2.0.0-rc5",
+ "moonbase-runtime",
  "parity-scale-codec",
  "polkadot-parachain",
 ]
@@ -3664,17 +3649,23 @@ dependencies = [
 name = "moonbase-runtime"
 version = "0.1.0"
 dependencies = [
- "cumulus-message-broker",
+ "base58",
+ "blake2-rfc",
  "cumulus-parachain-upgrade",
  "cumulus-primitives",
  "cumulus-runtime",
- "cumulus-token-dealer",
  "cumulus-upward-message",
+ "ed25519-dalek",
  "frame-executive",
  "frame-support 2.0.0-rc5",
  "frame-system 2.0.0-rc5",
  "frame-system-rpc-runtime-api",
  "frontier-rpc-primitives",
+ "hex",
+ "lazy_static",
+ "libsecp256k1",
+ "log 0.4.11",
+ "merlin",
  "pallet-balances 2.0.0-rc5",
  "pallet-ethereum 0.1.0",
  "pallet-evm 2.0.0-rc5",
@@ -3686,7 +3677,13 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "parachain-info",
  "parity-scale-codec",
+ "parking_lot 0.10.2",
+ "rand 0.7.3",
+ "regex",
+ "schnorrkel",
  "serde",
+ "sha2 0.8.2",
+ "sha3 0.8.2",
  "sp-api 2.0.0-rc5",
  "sp-block-builder",
  "sp-core 2.0.0-rc5",
@@ -3694,11 +3691,15 @@ dependencies = [
  "sp-io 2.0.0-rc5",
  "sp-offchain",
  "sp-runtime 2.0.0-rc5",
+ "sp-runtime-interface 2.0.0-rc5",
  "sp-session",
  "sp-std 2.0.0-rc5",
  "sp-transaction-pool",
  "sp-version 2.0.0-rc5",
  "substrate-wasm-builder-runner 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tiny-keccak",
+ "twox-hash",
+ "zeroize",
 ]
 
 [[package]]
@@ -3718,7 +3719,9 @@ dependencies = [
  "frontier-rpc",
  "frontier-rpc-primitives",
  "futures 0.3.5",
+ "hex-literal",
  "jsonrpc-core",
+ "libsecp256k1",
  "log 0.4.11",
  "moonbase-runtime",
  "nix 0.17.0",
@@ -3754,6 +3757,7 @@ dependencies = [
  "sc-service",
  "sc-transaction-pool",
  "serde",
+ "sha3 0.8.2",
  "sp-api 2.0.0-rc5",
  "sp-block-builder",
  "sp-blockchain",
