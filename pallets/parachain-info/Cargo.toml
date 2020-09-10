@@ -11,7 +11,7 @@ serde = { version = "1.0.101", optional = true, features = ["derive"] }
 frame-support = { git = "https://github.com/purestake/substrate", default-features = false, branch = "crystalin-rococo-branch" }
 frame-system = { git = "https://github.com/purestake/substrate", default-features = false, branch = "crystalin-rococo-branch" }
 
-cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
+cumulus-primitives = { git = "https://github.com/crystalin/cumulus",  default-features = false, branch = "crystalin-rococo-branch" }
 
 [features]
 default = ["std"]

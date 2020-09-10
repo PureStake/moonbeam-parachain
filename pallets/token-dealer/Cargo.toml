@@ -11,8 +11,8 @@ frame-support = { git = "https://github.com/purestake/substrate", default-featur
 frame-system = { git = "https://github.com/purestake/substrate", default-features = false, branch = "crystalin-rococo-branch" }
 
 # Cumulus dependencies
-cumulus-upward-message = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
+cumulus-upward-message = { git = "https://github.com/crystalin/cumulus",  default-features = false, branch = "crystalin-rococo-branch" }
+cumulus-primitives = { git = "https://github.com/crystalin/cumulus",  default-features = false, branch = "crystalin-rococo-branch" }
 
 # Polkadot dependencies
 polkadot-parachain = { git = "https://github.com/paritytech/polkadot", branch = "rococo-branch", default-features = false }
