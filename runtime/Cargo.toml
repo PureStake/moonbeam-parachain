@@ -52,7 +52,7 @@ cumulus-upward-message = { git = "https://github.com/crystalin/cumulus",  defaul
 cumulus-primitives = { git = "https://github.com/crystalin/cumulus",  default-features = false, branch = "crystalin-rococo-branch" }
 
 [build-dependencies]
-wasm-builder-runner = { package = "substrate-wasm-builder-runner", version = "1.0.6" }
+wasm-builder-runner = {  git = "https://github.com/purestake/substrate", default-features = false, branch = "crystalin-rococo-branch", package = "substrate-wasm-builder-runner" }
 
 [features]
 default = [ "std" ]
