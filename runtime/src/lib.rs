@@ -35,7 +35,7 @@ pub use pallet_timestamp::Call as TimestampCall;
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 use ethereum::{Block as EthereumBlock, Transaction as EthereumTransaction, Receipt as EthereumReceipt};
-use evm::{Account as EVMAccount, FeeCalculator, HashedAddressMapping, EnsureAddressTruncated};
+use pallet_evm::{Account as EVMAccount, FeeCalculator, HashedAddressMapping, EnsureAddressTruncated};
 use frontier_rpc_primitives::{TransactionStatus};
 
 /// Import the template pallet.
@@ -269,7 +269,7 @@ parameter_types! {
 	pub const ChainId: u64 = 43;
 }
 
-impl evm::Trait for Runtime {
+impl pallet_evm::Trait for Runtime {
 	type FeeCalculator = FixedGasPrice;
 	type CallOrigin = EnsureAddressTruncated;
 	type WithdrawOrigin = EnsureAddressTruncated;
@@ -339,7 +339,7 @@ construct_runtime! {
 		ParachainInfo: parachain_info::{Module, Storage, Config},
 		TokenDealer: cumulus_token_dealer::{Module, Call, Event<T>},
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
-		EVM: evm::{Module, Config, Call, Storage, Event<T>},
+		EVM: pallet_evm::{Module, Config, Call, Storage, Event<T>},
 		Ethereum: ethereum::{Module, Call, Storage, Event, Config, ValidateUnsigned},
 	}
 }
@@ -460,7 +460,7 @@ impl_runtime_apis! {
 		}
 
 		fn account_basic(address: H160) -> EVMAccount {
-			evm::Module::<Runtime>::account_basic(&address)
+			pallet_evm::Module::<Runtime>::account_basic(&address)
 		}
 
 		fn gas_price() -> U256 {
@@ -468,7 +468,7 @@ impl_runtime_apis! {
 		}
 
 		fn account_code_at(address: H160) -> Vec<u8> {
-			evm::Module::<Runtime>::account_codes(address)
+			pallet_evm::Module::<Runtime>::account_codes(address)
 		}
 
 		fn author() -> H160 {
@@ -478,7 +478,7 @@ impl_runtime_apis! {
 		fn storage_at(address: H160, index: U256) -> H256 {
 			let mut tmp = [0u8; 32];
 			index.to_big_endian(&mut tmp);
-			evm::Module::<Runtime>::account_storages(address, H256::from_slice(&tmp[..]))
+			pallet_evm::Module::<Runtime>::account_storages(address, H256::from_slice(&tmp[..]))
 		}
 
 		fn call(
@@ -492,23 +492,23 @@ impl_runtime_apis! {
 		) -> Option<(Vec<u8>, U256)> {
 			match action {
 				ethereum::TransactionAction::Call(to) =>
-					evm::Module::<Runtime>::execute_call(
+					pallet_evm::Module::<Runtime>::execute_call(
 						from,
 						to,
 						data,
 						value,
 						gas_limit.low_u32(),
-						gas_price.unwrap_or_else(|| U256::from(0)),
+						Some(gas_price.unwrap_or_else(|| U256::from(0))),
 						nonce,
 						false,
 					).ok().map(|(_, ret, gas)| (ret, gas)),
 				ethereum::TransactionAction::Create =>
-					evm::Module::<Runtime>::execute_create(
+					pallet_evm::Module::<Runtime>::execute_create(
 						from,
 						data,
 						value,
 						gas_limit.low_u32(),
-						gas_price.unwrap_or_else(|| U256::from(0)),
+						Some(gas_price.unwrap_or_else(|| U256::from(0))),
 						nonce,
 						false,
 					).ok().map(|(_, _, gas)| (vec![], gas)),
