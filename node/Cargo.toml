@@ -69,11 +69,11 @@ frontier-rpc = { version = "0.1.0", path = "../vendor/frontier/rpc" }
 frontier-rpc-primitives = { version = "0.1.0", path = "../vendor/frontier/rpc/primitives" }
 
 # Cumulus dependencies
-cumulus-consensus = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
-cumulus-collator = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
-cumulus-network = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
-cumulus-primitives = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
-cumulus-service = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
+cumulus-consensus = { git = "https://github.com/paritytech/cumulus", branch = 'cecton-fix-int-test-again' }
+cumulus-collator = { git = "https://github.com/paritytech/cumulus", branch = 'cecton-fix-int-test-again' }
+cumulus-network = { git = "https://github.com/paritytech/cumulus", branch = 'cecton-fix-int-test-again' }
+cumulus-primitives = { git = "https://github.com/paritytech/cumulus", branch = 'cecton-fix-int-test-again' }
+cumulus-service = { git = "https://github.com/paritytech/cumulus", branch = 'cecton-fix-int-test-again' }
 
 
 # Polkadot dependencies

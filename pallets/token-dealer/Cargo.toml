@@ -11,8 +11,8 @@ frame-support = { git = "https://github.com/paritytech/substrate", default-featu
 frame-system = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-branch" }
 
 # Cumulus dependencies
-cumulus-upward-message = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
-cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
+cumulus-upward-message = { git = "https://github.com/paritytech/cumulus",  default-features = false, branch = 'cecton-fix-int-test-again' }
+cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, branch = 'cecton-fix-int-test-again' }
 
 # Polkadot dependencies
 polkadot-parachain = { git = "https://github.com/paritytech/polkadot", branch = "rococo-branch", default-features = false }
