@@ -1,10 +1,8 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
 
 use cumulus_primitives::ParaId;
-use moonbase_runtime::{
-	AccountId, BalancesConfig, GenesisConfig, Signature, SudoConfig, SystemConfig,
-	ParachainInfoConfig, WASM_BINARY, EVMConfig, EthereumConfig,
-};
+use moonbase_primitives::{AccountId, Signature};
+use hex_literal::hex;
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use sc_service::ChainType;
 use serde::{Deserialize, Serialize};
@@ -13,7 +11,9 @@ use sp_runtime::traits::{IdentifyAccount, Verify};
 use std::collections::BTreeMap;
 
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
-pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
+pub type ChainSpec = sc_service::GenericChainSpec<moonbase_runtime::GenesisConfig, Extensions>;
+pub type ContractsChainSpec =
+	sc_service::GenericChainSpec<moonbase_runtime::GenesisConfig, Extensions>;
 
 /// Helper function to generate a crypto pair from seed
 pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
@@ -112,24 +112,24 @@ fn testnet_genesis(
 	root_key: AccountId,
 	endowed_accounts: Vec<AccountId>,
 	id: ParaId,
-) -> GenesisConfig {
-	GenesisConfig {
-		frame_system: Some(SystemConfig {
-			code: WASM_BINARY.to_vec(),
+) -> moonbase_runtime::GenesisConfig {
+	moonbase_runtime::GenesisConfig {
+		frame_system: Some(moonbase_runtime::SystemConfig {
+			code: vec![], // WASM_BINARY.to_vec(),
 			changes_trie_config: Default::default(),
 		}),
-		pallet_balances: Some(BalancesConfig {
+		pallet_balances: Some(moonbase_runtime::BalancesConfig {
 			balances: endowed_accounts
 				.iter()
 				.cloned()
 				.map(|k| (k, 1 << 60))
 				.collect(),
 		}),
-		pallet_sudo: Some(SudoConfig { key: root_key }),
-		parachain_info: Some(ParachainInfoConfig { parachain_id: id }),
-		pallet_evm: Some(EVMConfig {
+		pallet_sudo: Some(moonbase_runtime::SudoConfig { key: root_key }),
+		parachain_info: Some(moonbase_runtime::ParachainInfoConfig { parachain_id: id }),
+		pallet_evm: Some(moonbase_runtime::EVMConfig {
 			accounts: BTreeMap::new(),
 		}),
-		ethereum: Some(EthereumConfig {}),
+		ethereum: Some(moonbase_runtime::EthereumConfig {}),
 	}
 }

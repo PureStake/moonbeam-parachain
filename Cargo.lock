@@ -937,7 +937,7 @@ dependencies = [
 [[package]]
 name = "cumulus-collator"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "cumulus-consensus",
  "cumulus-network",
@@ -965,7 +965,7 @@ dependencies = [
 [[package]]
 name = "cumulus-consensus"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "futures 0.3.5",
  "log 0.4.11",
@@ -987,7 +987,7 @@ dependencies = [
 [[package]]
 name = "cumulus-message-broker"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "cumulus-primitives",
  "cumulus-upward-message",
@@ -1003,7 +1003,7 @@ dependencies = [
 [[package]]
 name = "cumulus-network"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "cumulus-primitives",
  "futures 0.3.5",
@@ -1025,7 +1025,7 @@ dependencies = [
 [[package]]
 name = "cumulus-parachain-upgrade"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "cumulus-primitives",
  "cumulus-runtime",
@@ -1046,7 +1046,7 @@ dependencies = [
 [[package]]
 name = "cumulus-primitives"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "impl-trait-for-tuples",
  "parity-scale-codec",
@@ -1061,12 +1061,11 @@ dependencies = [
 [[package]]
 name = "cumulus-runtime"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "cumulus-primitives",
  "frame-executive",
  "hash-db",
- "hashbrown 0.8.2",
  "memory-db",
  "parity-scale-codec",
  "polkadot-parachain",
@@ -1081,7 +1080,7 @@ dependencies = [
 [[package]]
 name = "cumulus-service"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "cumulus-collator",
  "cumulus-consensus",
@@ -1115,7 +1114,7 @@ dependencies = [
 [[package]]
 name = "cumulus-upward-message"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/cumulus?rev=96da14c14fb785e106bb89a18c9dedaf2f789d2c#96da14c14fb785e106bb89a18c9dedaf2f789d2c"
+source = "git+https://github.com/paritytech/cumulus?rev=3da343b926eeb189ec3a89a359d927a83f987127#3da343b926eeb189ec3a89a359d927a83f987127"
 dependencies = [
  "kusama-runtime",
  "polkadot-core-primitives",
@@ -3486,6 +3485,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "moonbase-primitives"
+version = "0.1.0"
+dependencies = [
+ "sp-core",
+ "sp-runtime",
+]
+
+[[package]]
 name = "moonbase-runtime"
 version = "0.1.0"
 dependencies = [
@@ -3500,6 +3507,7 @@ dependencies = [
  "frame-system",
  "frame-system-rpc-runtime-api",
  "frontier-rpc-primitives",
+ "moonbase-primitives",
  "pallet-balances",
  "pallet-ethereum 0.1.0",
  "pallet-evm",
@@ -3542,8 +3550,10 @@ dependencies = [
  "frontier-rpc",
  "frontier-rpc-primitives",
  "futures 0.3.5",
+ "hex-literal",
  "jsonrpc-core",
  "log 0.4.11",
+ "moonbase-primitives",
  "moonbase-runtime",
  "nix 0.17.0",
  "pallet-ethereum 0.1.0",

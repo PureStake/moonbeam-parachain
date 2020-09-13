@@ -20,7 +20,7 @@
 use std::{sync::Arc, fmt};
 
 use sc_consensus_manual_seal::rpc::{ManualSeal, ManualSealApi};
-use moonbase_runtime::{Hash, AccountId, Index, opaque::Block, Balance};
+use moonbase_primitives::{Hash, Block, AccountId, Index, Balance};
 use sp_api::ProvideRuntimeApi;
 use sp_transaction_pool::TransactionPool;
 use sp_blockchain::{Error as BlockChainError, HeaderMetadata, HeaderBackend};

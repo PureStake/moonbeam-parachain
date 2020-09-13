@@ -1,8 +1,24 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
+// This file is part of Cumulus.
+
+// Cumulus is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// Cumulus is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with Cumulus.  If not, see <http://www.gnu.org/licenses/>.
+
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use frame_support::{
-	decl_event, decl_module, dispatch::DispatchResult,
+	decl_event, decl_module,
+	dispatch::DispatchResult,
 	traits::{Currency, ExistenceRequirement, WithdrawReason},
 };
 use frame_system::ensure_signed;
@@ -58,7 +74,7 @@ decl_event! {
 }
 
 decl_module! {
-	pub struct Module<T: Trait> for enum Call where origin: T::Origin, system = frame_system {
+	pub struct Module<T: Trait> for enum Call where origin: T::Origin {
 		/// Transfer `amount` of tokens on the relay chain from the Parachain account to
 		/// the given `dest` account.
 		#[weight = 10]

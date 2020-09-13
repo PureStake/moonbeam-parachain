@@ -12,6 +12,7 @@ serde = { version = "1.0.101", default-features = false, optional = true, featur
 codec = { package = "parity-scale-codec", version = "1.0.0", default-features = false, features = ["derive"] }
 
 parachain-info = { path = "../pallets/parachain-info", default-features = false}
+moonbase-primitives = { path = "../primitives", default-features = false}
 cumulus-token-dealer = { path = "../pallets/token-dealer", default-features = false}
 template = { package = "pallet-template", path = "../pallets/template", version = "2.0.0-rc5", default-features = false}
 
@@ -44,11 +45,11 @@ ethereum = { version = "0.1.0", default-features = false, package = "pallet-ethe
 pallet-evm = { path = "../pallets/evm", default-features = false }
 
 # Cumulus dependencies
-cumulus-runtime = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-parachain-upgrade = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-message-broker = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-upward-message = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
+cumulus-runtime = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '3da343b926eeb189ec3a89a359d927a83f987127'  }
+cumulus-parachain-upgrade = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '3da343b926eeb189ec3a89a359d927a83f987127'  }
+cumulus-message-broker = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '3da343b926eeb189ec3a89a359d927a83f987127'  }
+cumulus-upward-message = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '3da343b926eeb189ec3a89a359d927a83f987127'  }
+cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '3da343b926eeb189ec3a89a359d927a83f987127'  }
 
 [build-dependencies]
 wasm-builder-runner = { package = "substrate-wasm-builder-runner", version = "1.0.6" }
@@ -78,6 +79,7 @@ std = [
 	"pallet-sudo/std",
 	"pallet-transaction-payment/std",
 	"parachain-info/std",
+	"moonbase-primitives/std",
 	"cumulus-runtime/std",
 	"cumulus-parachain-upgrade/std",
 	"cumulus-message-broker/std",

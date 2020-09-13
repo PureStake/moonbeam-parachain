@@ -1,0 +1,20 @@
+[package]
+name = "moonbase-primitives"
+description = 'Moonbase Parachain Primitives'
+homepage = 'https://moonbeam.network'
+license = 'Unlicense'
+version = '0.1.0'
+authors = ["PureStake"]
+edition = '2018'
+
+[dependencies]
+# Substrate dependencies
+sp-runtime = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-branch" }
+sp-core = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-branch" }
+
+[features]
+default = [ "std" ]
+std = [
+	"sp-runtime/std",
+	"sp-core/std"
+]

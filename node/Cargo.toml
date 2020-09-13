@@ -14,6 +14,7 @@ path = 'src/main.rs'
 
 [dependencies]
 derive_more = '0.15.0'
+hex-literal = "0.2"
 exit-future = '0.1.4'
 futures = { version = "0.3.1", features = ["compat"] }
 log = '0.4.8'
@@ -59,6 +60,8 @@ pallet-transaction-payment-rpc = { git = "https://github.com/paritytech/substrat
 sp-block-builder = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 sc-consensus-manual-seal = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 
+moonbase-primitives = { path = "../primitives"}
+
 evm = { package = "pallet-evm", path = "../pallets/evm" }
 ethereum = { version = "0.1.0", package = "pallet-ethereum", path = "../vendor/frontier/frame/ethereum" }
 
@@ -66,11 +69,12 @@ frontier-rpc = { version = "0.1.0", path = "../vendor/frontier/rpc" }
 frontier-rpc-primitives = { version = "0.1.0", path = "../vendor/frontier/rpc/primitives" }
 
 # Cumulus dependencies
-cumulus-consensus = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-collator = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-network = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-primitives = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-service = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
+cumulus-consensus = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
+cumulus-collator = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
+cumulus-network = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
+cumulus-primitives = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
+cumulus-service = { git = "https://github.com/paritytech/cumulus", rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
+
 
 # Polkadot dependencies
 polkadot-primitives = { git = "https://github.com/paritytech/polkadot", branch = "rococo-branch" }

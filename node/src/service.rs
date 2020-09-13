@@ -31,23 +31,23 @@ pub fn new_partial(
 ) -> Result<
 	PartialComponents<
 		TFullClient<
-			moonbase_runtime::opaque::Block,
+			moonbase_primitives::Block,
 			moonbase_runtime::RuntimeApi,
 			crate::service::Executor,
 		>,
-		TFullBackend<moonbase_runtime::opaque::Block>,
+		TFullBackend<moonbase_primitives::Block>,
 		LongestChain<
-			Backend<moonbase_runtime::opaque::Block>,
-			moonbase_runtime::opaque::Block
+			Backend<moonbase_primitives::Block>,
+			moonbase_primitives::Block
 		>,
 		sp_consensus::import_queue::BasicQueue<
-			moonbase_runtime::opaque::Block,
+			moonbase_primitives::Block,
 			PrefixedMemoryDB<BlakeTwo256>,
 		>,
 		sc_transaction_pool::FullPool<
-			moonbase_runtime::opaque::Block,
+			moonbase_primitives::Block,
 			TFullClient<
-				moonbase_runtime::opaque::Block,
+				moonbase_primitives::Block,
 				moonbase_runtime::RuntimeApi,
 				crate::service::Executor,
 			>,
@@ -59,7 +59,7 @@ pub fn new_partial(
 	let inherent_data_providers = sp_inherents::InherentDataProviders::new();
 
 	let (client, backend, keystore, task_manager) = sc_service::new_full_parts::<
-		moonbase_runtime::opaque::Block,
+		moonbase_primitives::Block,
 		moonbase_runtime::RuntimeApi,
 		crate::service::Executor,
 	>(&config)?;
@@ -112,7 +112,7 @@ pub fn run_node(
 	TaskManager,
 	Arc<
 		TFullClient<
-			moonbase_runtime::opaque::Block,
+			moonbase_primitives::Block,
 			moonbase_runtime::RuntimeApi,
 			crate::service::Executor,
 		>,

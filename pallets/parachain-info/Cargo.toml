@@ -11,7 +11,7 @@ serde = { version = "1.0.101", optional = true, features = ["derive"] }
 frame-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-branch" }
 frame-system = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-branch" }
 
-cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
+cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, rev = '3da343b926eeb189ec3a89a359d927a83f987127' }
 
 [features]
 default = ["std"]
