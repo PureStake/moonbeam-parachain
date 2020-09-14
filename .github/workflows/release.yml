@@ -26,20 +26,13 @@ jobs:
         default: true
     - name: Build
       run: cargo build --release --verbose --all
-    - name: Upload moonbeam runtime
+    - name: Upload moonbase-testnet node
       uses: actions/upload-artifact@v2
       with:
-        name: moonbeam-runtime
-        path: "target/release/wbuild/moonbeam-runtime/moonbeam_runtime.compact.wasm"
-    - name: Upload moonbeam node
-      uses: actions/upload-artifact@v2
-      with:
-        name: moonbeam
-        path: "target/release/node-moonbeam"
+        name: moonbase-testnet
+        path: "target/release/moonbase-testnet"
     - name: Setup environment
       run: source tools/aliases.sh
-    - name: Generate relay specs
-      run: relay_specs
     - name: Generate parachain specs
       run: parachain_specs
     - name: Upload parachain spec
@@ -47,3 +40,10 @@ jobs:
       with:
         name: parachain-specs.json
         path: "specs/moonbase-testnet-parachain-spec-plain.json"
+    - name: Generate moonbase-testnet runtime
+      run: target/release/moonbase-testnet export-genesis-wasm --chain specs/moonbase-testnet-parachain-spec-plain.json > specs/parachain.wasm
+    - name: Upload moonbase-testnet runtime
+      uses: actions/upload-artifact@v2
+      with:
+        name: moonbase-testnet-runtime
+        path: "specs/parachain.wasm"
