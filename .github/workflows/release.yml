@@ -1,6 +1,6 @@
 name: Publish draft release
 
-on: ["push"]
+on:
   push:
     tags:
       - v**.**.**
