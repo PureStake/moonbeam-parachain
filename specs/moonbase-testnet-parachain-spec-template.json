@@ -24,10 +24,6 @@
           [
             "16f4zjGB1XyXfdr7swiJFr91mSnHrb4CtEt95pz3htF8fHGQ",
             115292150460684697600
-          ],
-          [
-            "5GUp5GiX9qVZV4UjX4vvt1KdkqryxUpYh8WGZ6xRSaTCJWBp",
-            11529215046068469760000
           ]
         ]
       },
@@ -35,18 +31,23 @@
         "key": "13jU2C8jiAMkMv5iXiJ8Ue2xLTmJo4byfKm5gBehqPAvkGC4"
       },
       "parachainInfo": {
-        "parachainId": 200
+        "parachainId": 1000
       },
       "palletEvm": {
-	      "accounts": {
-		      "0x30a5e0cbe6729895f4188000b4ec61f8a659d2d6": {
-			      "balance": "0x11529215046068469760001",
-			      "nonce": "0x0",
-			      "storage": {},
-			      "code": []
-
-		      }
-	      }
+        "accounts": {
+          "0x7833fB364439759A6EDC3BCc243774b815B8e2A6": {
+            "balance": "0x11529215046068469760001",
+            "nonce": "0x0",
+            "storage": {},
+            "code": []
+          },
+          "0x30a5e0cbe6729895f4188000b4ec61f8a659d2d6": {
+            "balance": "0x3635c9adc5dea00000",
+            "nonce": "0x0",
+            "storage": {},
+            "code": []
+          }
+        }
       },
       "ethereum": {}
     }
