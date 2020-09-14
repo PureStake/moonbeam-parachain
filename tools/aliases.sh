@@ -76,8 +76,8 @@ export PARACHAIN_GENESIS="$PARACHAIN_PATH/specs/parachain.genesis"
 export PARACHAIN_PORT=$((USER_PORT + 1000 + 42))
 alias parachain="
     echo 'parachain (1000) - p2p-port: $((PARACHAIN_PORT)), http-port: $((PARACHAIN_PORT + 1)) , ws-port: $((PARACHAIN_PORT + 2))';
-    $PARACHAIN_BINARY export-genesis-wasm --chain $PARACHAIN_SPEC_PLAIN > $PARACHAIN_WASM; 
-    $PARACHAIN_BINARY export-genesis-state --parachain-id 1000  --chain $PARACHAIN_SPEC_PLAIN > $PARACHAIN_GENESIS;
+    $PARACHAIN_BINARY export-genesis-wasm > $PARACHAIN_WASM; 
+    $PARACHAIN_BINARY export-genesis-state --parachain-id 1000 --chain $PARACHAIN_SPEC_PLAIN > $PARACHAIN_GENESIS;
     $PARACHAIN_BINARY \
       --port $((PARACHAIN_PORT)) \
       --rpc-port $((PARACHAIN_PORT + 1)) \
