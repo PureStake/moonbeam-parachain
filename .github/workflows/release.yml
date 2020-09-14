@@ -1,0 +1,49 @@
+name: Publish draft release
+
+on: ["push"]
+  push:
+    tags:
+      - v**.**.**
+
+jobs:
+  build-runtimes:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Submodules
+      run: git submodule update --init --recursive
+    - name: Cache Rust dependencies
+      uses: actions/cache@v1.1.2
+      with:
+        path: target
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-
+    - uses: actions-rs/toolchain@v1
+      with:
+        target: wasm32-unknown-unknown
+        toolchain: nightly
+        default: true
+    - name: Build
+      run: cargo build --release --verbose --all
+    - name: Upload moonbeam runtime
+      uses: actions/upload-artifact@v2
+      with:
+        name: moonbeam-runtime
+        path: "target/release/wbuild/moonbeam-runtime/moonbeam_runtime.compact.wasm"
+    - name: Upload moonbeam node
+      uses: actions/upload-artifact@v2
+      with:
+        name: moonbeam
+        path: "target/release/node-moonbeam"
+    - name: Setup environment
+      run: source tools/aliases.sh
+    - name: Generate relay specs
+      run: relay_specs
+    - name: Generate parachain specs
+      run: parachain_specs
+    - name: Upload parachain spec
+      uses: actions/upload-artifact@v2
+      with:
+        name: parachain-specs.json
+        path: "specs/moonbase-testnet-parachain-spec-plain.json"
