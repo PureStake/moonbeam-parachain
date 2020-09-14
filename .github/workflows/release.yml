@@ -1,6 +1,6 @@
 name: Publish draft release
 
-on: ["workflow_dispatch"]
+on: ["push"]
 
 jobs:
   build-runtimes:
