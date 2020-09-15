@@ -51,6 +51,7 @@ alias relay1="
   $POLKADOT_BINARY --chain $POLKADOT_SPEC_RAW \
     --node-key 1111111111111111111111111111111111111111111111111111111111111111 \
     --tmp \
+    --execution Wasm \
     --port $((RELAY1_PORT)) \
     --rpc-port $((RELAY1_PORT + 1)) \
     --ws-port $((RELAY1_PORT + 2)) \
@@ -63,6 +64,7 @@ alias relay2="
   $POLKADOT_BINARY --chain $POLKADOT_SPEC_RAW \
     --node-key 2222222222222222222222222222222222222222222222222222222222222222 \
     --tmp \
+    --execution Wasm \
     --port $((RELAY2_PORT)) \
     --rpc-port $((RELAY2_PORT + 1)) \
     --ws-port $((RELAY2_PORT + 2)) \
@@ -85,9 +87,11 @@ alias parachain="
       --ws-port $((PARACHAIN_PORT + 2)) \
       --validator \
       --tmp \
+      --execution Wasm \
       '-linfo,evm=trace,ethereum=trace,rpc=trace' \
       --chain $PARACHAIN_SPEC_PLAIN  \
       -- \
+        --execution Wasm \
         --tmp \
         --bootnodes /ip4/127.0.0.1/tcp/$((RELAY1_PORT))/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz \
         --bootnodes /ip4/127.0.0.1/tcp/$((RELAY2_PORT))/p2p/12D3KooWLdJAwPtyQ5RFnr9wGXsQzpf3P2SeqFbYkqbfVehLu4Ns \
@@ -104,10 +108,12 @@ alias rpc_node="
       --rpc-external \
       --tmp \
       --rpc-cors=all \
+      --execution Wasm \
       '-linfo,evm=trace,ethereum=trace,rpc=trace' \
       --chain $PARACHAIN_SPEC_PLAIN  \
       --bootnodes /ip4/127.0.0.1/tcp/$((PARACHAIN_PORT))/p2p/12D3KooWBRFW3HkJCLKSWb4yG6iWRBpgNjbM4FFvNsL5T5JKTqrd \
       -- \
+        --execution Wasm \
         --tmp \
         --port $((RPC_NODE_PORT + 10)) \
         --rpc-port $((RPC_NODE_PORT + 10 + 1)) \
