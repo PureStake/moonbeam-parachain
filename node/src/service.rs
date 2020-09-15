@@ -15,12 +15,15 @@ use sp_trie::PrefixedMemoryDB;
 use std::sync::Arc;
 use sc_consensus::LongestChain;
 use sc_client_db::Backend;
+use moonbase_runtime::{RuntimeApi, opaque::Block};
 // Our native executor instance.
 native_executor_instance!(
 	pub Executor,
 	moonbase_runtime::api::dispatch,
 	moonbase_runtime::native_version,
 );
+
+type FullClient = TFullClient<Block, RuntimeApi, Executor>;
 
 /// Starts a `ServiceBuilder` for a full service.
 ///
@@ -30,27 +33,19 @@ pub fn new_partial(
 	config: &mut Configuration,
 ) -> Result<
 	PartialComponents<
-		TFullClient<
-			moonbase_runtime::opaque::Block,
-			moonbase_runtime::RuntimeApi,
-			crate::service::Executor,
-		>,
-		TFullBackend<moonbase_runtime::opaque::Block>,
+		FullClient,
+		TFullBackend<Block>,
 		LongestChain<
-			Backend<moonbase_runtime::opaque::Block>,
-			moonbase_runtime::opaque::Block
+			Backend<Block>,
+			Block
 		>,
 		sp_consensus::import_queue::BasicQueue<
-			moonbase_runtime::opaque::Block,
+			Block,
 			PrefixedMemoryDB<BlakeTwo256>,
 		>,
 		sc_transaction_pool::FullPool<
-			moonbase_runtime::opaque::Block,
-			TFullClient<
-				moonbase_runtime::opaque::Block,
-				moonbase_runtime::RuntimeApi,
-				crate::service::Executor,
-			>,
+			Block,
+			FullClient,
 		>,
 		(),
 	>,
@@ -59,9 +54,9 @@ pub fn new_partial(
 	let inherent_data_providers = sp_inherents::InherentDataProviders::new();
 
 	let (client, backend, keystore, task_manager) = sc_service::new_full_parts::<
-		moonbase_runtime::opaque::Block,
-		moonbase_runtime::RuntimeApi,
-		crate::service::Executor,
+		Block,
+		RuntimeApi,
+		Executor,
 	>(&config)?;
 	let client = Arc::new(client);
 	let select_chain = sc_consensus::LongestChain::new(backend.clone());
