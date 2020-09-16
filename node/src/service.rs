@@ -15,6 +15,7 @@ use sp_trie::PrefixedMemoryDB;
 use std::sync::Arc;
 use sc_consensus::LongestChain;
 use sc_client_db::Backend;
+use frontier_consensus::FrontierBlockImport;
 use moonbase_runtime::{RuntimeApi, opaque::Block};
 // Our native executor instance.
 native_executor_instance!(
@@ -47,7 +48,11 @@ pub fn new_partial(
 			Block,
 			FullClient,
 		>,
-		(),
+		FrontierBlockImport<
+			moonbase_runtime::opaque::Block,
+			Arc<FullClient>,
+			FullClient
+		>,
 	>,
 	sc_service::Error,
 > {
@@ -71,9 +76,15 @@ pub fn new_partial(
 		client.clone(),
 	);
 
+	let frontier_block_import = FrontierBlockImport::new(
+		client.clone(),
+		client.clone(),
+		true
+	);
+
 	let import_queue = cumulus_consensus::import_queue::import_queue(
 		client.clone(),
-		client.clone(),
+		frontier_block_import.clone(),
 		inherent_data_providers.clone(),
 		&task_manager.spawn_handle(),
 		registry.clone(),
@@ -88,7 +99,7 @@ pub fn new_partial(
 		transaction_pool,
 		inherent_data_providers,
 		select_chain: select_chain,
-		other: (),
+		other: frontier_block_import,
 	};
 
 	Ok(params)

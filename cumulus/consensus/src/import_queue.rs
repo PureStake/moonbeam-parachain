@@ -98,8 +98,8 @@ where
 		));
 		block_import_params.post_hash = post_hash;
 
-		println!("################# header: {:#?}", header.clone());
-		println!("################# header hash: {:#?}", header.hash());
+		// println!("################# header: {:#?}", header.clone());
+		// println!("################# header hash: {:#?}", header.hash());
 
 		Ok((block_import_params, None))
 	}
