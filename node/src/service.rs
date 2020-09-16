@@ -157,6 +157,7 @@ pub fn run_node(
 	let transaction_pool = params.transaction_pool.clone();
 	let mut task_manager = params.task_manager;
 	let import_queue = params.import_queue;
+	let block_import = params.other;
 	let select_chain = params.select_chain;
 	let (network, network_status_sinks, system_rpc_tx, start_network) =
 		sc_service::build_network(sc_service::BuildNetworkParams {
@@ -222,7 +223,7 @@ pub fn run_node(
 
 		let params = StartCollatorParams {
 			para_id: id,
-			block_import: client.clone(),
+			block_import: block_import,
 			proposer_factory,
 			inherent_data_providers: params.inherent_data_providers,
 			block_status: client.clone(),
