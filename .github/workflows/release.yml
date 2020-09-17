@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # PARACHAIN_BINARY: target/release/moonbase-testnet
-      PARACHAIN_BINARY: echo
+      PARACHAIN_BINARY: echo \"code\"
       PARACHAIN_SPEC_TEMPLATE: specs/moonbase-testnet-parachain-spec-template.json
       PARACHAIN_SPEC_PLAIN: specs/moonbase-testnet-parachain-spec-plain.json
       PARACHAIN_SPEC_RAW: specs/moonbase-testnet-parachain-spec-raw.json
