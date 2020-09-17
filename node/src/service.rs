@@ -78,8 +78,7 @@ pub fn new_partial(
 
 	let frontier_block_import = FrontierBlockImport::new(
 		client.clone(),
-		client.clone(),
-		true
+		client.clone()
 	);
 
 	let import_queue = cumulus_consensus::import_queue::import_queue(

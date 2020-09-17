@@ -24,7 +24,7 @@ sp-std = { git = "https://github.com/paritytech/substrate", branch = "rococo-bra
 sp-io = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch", default-features = false }
 primitive-types = { version = "0.7.0", default-features = false, features = ["rlp"] }
 rlp = { version = "0.4", default-features = false }
-evm = { version = "0.17", default-features = false }
+evm = { git = "https://github.com/rust-blockchain/evm", rev = "ab564b6545af6e10e72aec844dc2c2f378869d76", default-features = false }
 sha3 = { version = "0.8", default-features = false }
 impl-trait-for-tuples = "0.1"
 ripemd160 = { version = "0.9", default-features = false }

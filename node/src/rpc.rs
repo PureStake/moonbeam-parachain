@@ -93,13 +93,6 @@ pub fn create_full<C, P, SC, BE>(
 		))
 	);
 
-	io.extend_with(
-		NetApiServer::to_delegate(NetApi::new(
-			client.clone(),
-			select_chain,
-		))
-	);
-
 	match command_sink {
 		Some(command_sink) => {
 			io.extend_with(
