@@ -51,12 +51,12 @@ alias relay1="
   $POLKADOT_BINARY --chain $POLKADOT_SPEC_RAW \
     --node-key 1111111111111111111111111111111111111111111111111111111111111111 \
     --tmp \
-    --execution Wasm \
     --port $((RELAY1_PORT)) \
     --rpc-port $((RELAY1_PORT + 1)) \
     --ws-port $((RELAY1_PORT + 2)) \
     --charlie \
-    '-lrpc=trace'"
+    '-linfo,evm=trace,ethereum=trace,rpc=trace' \
+      "
 
 export RELAY2_PORT=$((RELAY1_PORT + 100))
 alias relay2="
@@ -64,12 +64,11 @@ alias relay2="
   $POLKADOT_BINARY --chain $POLKADOT_SPEC_RAW \
     --node-key 2222222222222222222222222222222222222222222222222222222222222222 \
     --tmp \
-    --execution Wasm \
     --port $((RELAY2_PORT)) \
     --rpc-port $((RELAY2_PORT + 1)) \
     --ws-port $((RELAY2_PORT + 2)) \
     --bob \
-    '-lrpc=trace' \
+    '-linfo,evm=trace,ethereum=trace,rpc=trace' \
     --bootnodes /ip4/127.0.0.1/tcp/$((RELAY1_PORT))/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz"
 
 export PARACHAIN_WASM="$PARACHAIN_PATH/specs/parachain.wasm"
@@ -87,41 +86,133 @@ alias parachain="
       --ws-port $((PARACHAIN_PORT + 2)) \
       --validator \
       --tmp \
-      --execution Wasm \
-      '-linfo,evm=trace,ethereum=trace,rpc=trace' \
+      '-linfo,evm=trace,ethereum=trace,rpc=trace,state=trace' \
       --chain $PARACHAIN_SPEC_PLAIN  \
       -- \
-        --execution Wasm \
         --tmp \
+        --port $((PARACHAIN_PORT + 10)) \
+        --rpc-port $((PARACHAIN_PORT + 10 + 1)) \
+        --ws-port $((PARACHAIN_PORT + 10 + 2)) \
         --bootnodes /ip4/127.0.0.1/tcp/$((RELAY1_PORT))/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz \
         --bootnodes /ip4/127.0.0.1/tcp/$((RELAY2_PORT))/p2p/12D3KooWLdJAwPtyQ5RFnr9wGXsQzpf3P2SeqFbYkqbfVehLu4Ns \
         --chain $POLKADOT_SPEC_RAW"
 
-export RPC_NODE_PORT=$((PARACHAIN_PORT + 100))
-alias rpc_node="
-    echo 'parachain (1000) - p2p-port: $((RPC_NODE_PORT)), http-port: $((RPC_NODE_PORT + 1)) , ws-port: $((RPC_NODE_PORT + 2))';
+export RPC_NODE1_PORT=$((PARACHAIN_PORT + 100))
+alias rpc_node1="
+    echo 'parachain (1000) - p2p-port: $((RPC_NODE1_PORT)), http-port: $((RPC_NODE1_PORT + 1)) , ws-port: $((RPC_NODE1_PORT + 2))';
     $PARACHAIN_BINARY \
       --node-key 4444444444444444444444444444444444444444444444444444444444444444 \
-      --port $((RPC_NODE_PORT)) \
-      --rpc-port $((RPC_NODE_PORT + 1)) \
-      --ws-port $((RPC_NODE_PORT + 2)) \
+      --port $((RPC_NODE1_PORT)) \
+      --rpc-port $((RPC_NODE1_PORT + 1)) \
+      --ws-port $((RPC_NODE1_PORT + 2)) \
       --rpc-external \
       --tmp \
       --rpc-cors=all \
-      --execution Wasm \
-      '-linfo,evm=trace,ethereum=trace,rpc=trace' \
+      '-linfo,evm=trace,ethereum=trace,rpc=trace,state=trace' \
       --chain $PARACHAIN_SPEC_PLAIN  \
       --bootnodes /ip4/127.0.0.1/tcp/$((PARACHAIN_PORT))/p2p/12D3KooWBRFW3HkJCLKSWb4yG6iWRBpgNjbM4FFvNsL5T5JKTqrd \
       -- \
-        --execution Wasm \
         --tmp \
-        --port $((RPC_NODE_PORT + 10)) \
-        --rpc-port $((RPC_NODE_PORT + 10 + 1)) \
-        --ws-port $((RPC_NODE_PORT + 10 + 2)) \
+        --port $((RPC_NODE1_PORT + 10)) \
+        --rpc-port $((RPC_NODE1_PORT + 10 + 1)) \
+        --ws-port $((RPC_NODE1_PORT + 10 + 2)) \
         --bootnodes /ip4/127.0.0.1/tcp/$((RELAY1_PORT))/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz \
         --bootnodes /ip4/127.0.0.1/tcp/$((RELAY2_PORT))/p2p/12D3KooWLdJAwPtyQ5RFnr9wGXsQzpf3P2SeqFbYkqbfVehLu4Ns \
         --chain $POLKADOT_SPEC_RAW"
 
+export RPC_NODE2_PORT=$((PARACHAIN_PORT + 200))
+alias rpc_node2="
+    echo 'parachain (1000) - p2p-port: $((RPC_NODE2_PORT)), http-port: $((RPC_NODE2_PORT + 1)) , ws-port: $((RPC_NODE2_PORT + 2))';
+    $PARACHAIN_BINARY \
+      --node-key 5555555555555555555555555555555555555555555555555555555555555555 \
+      --port $((RPC_NODE2_PORT)) \
+      --rpc-port $((RPC_NODE2_PORT + 1)) \
+      --ws-port $((RPC_NODE2_PORT + 2)) \
+      --rpc-external \
+      --tmp \
+      --rpc-cors=all \
+      '-linfo,evm=trace,ethereum=trace,rpc=trace,state=trace' \
+      --chain $PARACHAIN_SPEC_PLAIN  \
+      --bootnodes /ip4/127.0.0.1/tcp/$((PARACHAIN_PORT))/p2p/12D3KooWBRFW3HkJCLKSWb4yG6iWRBpgNjbM4FFvNsL5T5JKTqrd \
+      -- \
+        --tmp \
+        --port $((RPC_NODE2_PORT + 10)) \
+        --rpc-port $((RPC_NODE2_PORT + 10 + 1)) \
+        --ws-port $((RPC_NODE2_PORT + 10 + 2)) \
+        --bootnodes /ip4/127.0.0.1/tcp/$((RELAY1_PORT))/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz \
+        --bootnodes /ip4/127.0.0.1/tcp/$((RELAY2_PORT))/p2p/12D3KooWLdJAwPtyQ5RFnr9wGXsQzpf3P2SeqFbYkqbfVehLu4Ns \
+        --chain $POLKADOT_SPEC_RAW"
+
+export RPC_NODE3_PORT=$((PARACHAIN_PORT + 200))
+alias rpc_node3="
+    echo 'parachain (1000) - p2p-port: $((RPC_NODE3_PORT)), http-port: $((RPC_NODE3_PORT + 1)) , ws-port: $((RPC_NODE3_PORT + 2))';
+    $PARACHAIN_BINARY \
+      --node-key 5555555555555555555555555555555555555555555555555555555555555555 \
+      --port $((RPC_NODE3_PORT)) \
+      --rpc-port $((RPC_NODE3_PORT + 1)) \
+      --ws-port $((RPC_NODE3_PORT + 2)) \
+      --rpc-external \
+      --tmp \
+      --rpc-cors=all \
+      '-linfo,evm=trace,ethereum=trace,rpc=trace,state=trace' \
+      --chain $PARACHAIN_SPEC_PLAIN  \
+      --bootnodes /ip4/127.0.0.1/tcp/$((PARACHAIN_PORT))/p2p/12D3KooWBRFW3HkJCLKSWb4yG6iWRBpgNjbM4FFvNsL5T5JKTqrd \
+      -- \
+        --tmp \
+        --port $((RPC_NODE3_PORT + 10)) \
+        --rpc-port $((RPC_NODE3_PORT + 10 + 1)) \
+        --ws-port $((RPC_NODE3_PORT + 10 + 2)) \
+        --bootnodes /ip4/127.0.0.1/tcp/$((RELAY1_PORT))/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz \
+        --bootnodes /ip4/127.0.0.1/tcp/$((RELAY2_PORT))/p2p/12D3KooWLdJAwPtyQ5RFnr9wGXsQzpf3P2SeqFbYkqbfVehLu4Ns \
+        --chain $POLKADOT_SPEC_RAW"
+
+        
+export RPC_NODE4_PORT=$((PARACHAIN_PORT + 200))
+alias rpc_node4="
+    echo 'parachain (1000) - p2p-port: $((RPC_NODE4_PORT)), http-port: $((RPC_NODE4_PORT + 1)) , ws-port: $((RPC_NODE4_PORT + 2))';
+    $PARACHAIN_BINARY \
+      --node-key 5555555555555555555555555555555555555555555555555555555555555555 \
+      --port $((RPC_NODE4_PORT)) \
+      --rpc-port $((RPC_NODE4_PORT + 1)) \
+      --ws-port $((RPC_NODE4_PORT + 2)) \
+      --rpc-external \
+      --tmp \
+      --rpc-cors=all \
+      '-linfo,evm=trace,ethereum=trace,rpc=trace,state=trace' \
+      --chain $PARACHAIN_SPEC_PLAIN  \
+      --bootnodes /ip4/127.0.0.1/tcp/$((PARACHAIN_PORT))/p2p/12D3KooWBRFW3HkJCLKSWb4yG6iWRBpgNjbM4FFvNsL5T5JKTqrd \
+      -- \
+        --tmp \
+        --port $((RPC_NODE4_PORT + 10)) \
+        --rpc-port $((RPC_NODE4_PORT + 10 + 1)) \
+        --ws-port $((RPC_NODE4_PORT + 10 + 2)) \
+        --bootnodes /ip4/127.0.0.1/tcp/$((RELAY1_PORT))/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz \
+        --bootnodes /ip4/127.0.0.1/tcp/$((RELAY2_PORT))/p2p/12D3KooWLdJAwPtyQ5RFnr9wGXsQzpf3P2SeqFbYkqbfVehLu4Ns \
+        --chain $POLKADOT_SPEC_RAW"
+        
+export RPC_NODE5_PORT=$((PARACHAIN_PORT + 200))
+alias rpc_node5="
+    echo 'parachain (1000) - p2p-port: $((RPC_NODE5_PORT)), http-port: $((RPC_NODE5_PORT + 1)) , ws-port: $((RPC_NODE5_PORT + 2))';
+    $PARACHAIN_BINARY \
+      --node-key 5555555555555555555555555555555555555555555555555555555555555555 \
+      --port $((RPC_NODE5_PORT)) \
+      --rpc-port $((RPC_NODE5_PORT + 1)) \
+      --ws-port $((RPC_NODE5_PORT + 2)) \
+      --rpc-external \
+      --tmp \
+      --rpc-cors=all \
+      '-linfo,evm=trace,ethereum=trace,rpc=trace,state=trace' \
+      --chain $PARACHAIN_SPEC_PLAIN  \
+      --bootnodes /ip4/127.0.0.1/tcp/$((PARACHAIN_PORT))/p2p/12D3KooWBRFW3HkJCLKSWb4yG6iWRBpgNjbM4FFvNsL5T5JKTqrd \
+      -- \
+        --tmp \
+        --port $((RPC_NODE5_PORT + 10)) \
+        --rpc-port $((RPC_NODE5_PORT + 10 + 1)) \
+        --ws-port $((RPC_NODE5_PORT + 10 + 2)) \
+        --bootnodes /ip4/127.0.0.1/tcp/$((RELAY1_PORT))/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz \
+        --bootnodes /ip4/127.0.0.1/tcp/$((RELAY2_PORT))/p2p/12D3KooWLdJAwPtyQ5RFnr9wGXsQzpf3P2SeqFbYkqbfVehLu4Ns \
+        --chain $POLKADOT_SPEC_RAW"
+        
 alias register_parachain='
     [ -z "$SUDO_SEED" ] && echo "Missing SUDO_SEED" || 
     polkadot-js-api \
