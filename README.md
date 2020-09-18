@@ -8,7 +8,7 @@ The scenario requires:
  (otherwise clone polkadot@26f1fa47 and `cargo build --release` it )
 
 
-### Building the relay
+## Building the relay
 
 ```
 git clone https://github.com/paritytech/polkadot
@@ -19,7 +19,7 @@ cargo build --release
 copy the `target/release/polkadot` into moonbeam-parachain `relay` folder
 
 
-### Running the 2 relays
+## Running the 2 relays
 relay 1:
 ```
 relay/polkadot --chain specs/rococo-moonbeam-spec-raw.json \
@@ -45,7 +45,7 @@ relay/polkadot --chain specs/rococo-moonbeam-spec-raw.json \
   --bootnodes /ip4/127.0.0.1/tcp/55042/p2p/12D3KooWPqT2nMDSiXUSx5D7fasaxhxKigVhcqfkKqrLghCq9jxz
 ```
 
-### Getting the parachain
+## Getting the parachain
 
 First you need to build it
 ```
@@ -59,7 +59,7 @@ target/release/moonbase-testnet export-genesis-wasm > specs/parachain.wasm
 target/release/moonbase-testnet export-genesis-state --parachain-id 1000 --chain specs/moonbase-testnet-parachain-spec-plain.json > specs/parachain.genesis
 ```
 
-### Running the parachain collator
+## Running the parachain collator
 ```
 target/release/moonbase-testnet \
   --node-key 3333333333333333333333333333333333333333333333333333333333333333 \
@@ -80,7 +80,7 @@ target/release/moonbase-testnet \
     --chain specs/rococo-moonbeam-spec-raw.json
 ```
 
-### Running the parachain rpc nodes
+## Running the parachain rpc nodes
 node 1:
 ```
 target/release/moonbase-testnet \
@@ -153,14 +153,15 @@ target/release/moonbase-testnet \
 ```
 
 
-## Running the parachain collator
+## Register the parachain:
 
 Installing the dependencies:
 ```
 cd tools && npm install
 ```
 
-### Register the parachain:
+### Registration
+From within the `tools` folder
 ```
 node_modules/.bin/polkadot-js-api \
 --ws "ws://localhost:55044" \
