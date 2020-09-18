@@ -180,4 +180,4 @@ From within the `tools` folder
 
 `node moonbeam_test/testscript.js `
 
-In order to reproduce the bug, you need to keep running this script, until it fails
+In order to reproduce the bug, you need to keep running this script, until one of the node fails.
