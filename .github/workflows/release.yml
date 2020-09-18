@@ -6,16 +6,17 @@ jobs:
   build-runtimes:
     runs-on: ubuntu-latest
     env:
-      # PARACHAIN_BINARY: target/release/moonbase-testnet
-      PARACHAIN_BINARY: echo "code"
+      PARACHAIN_BINARY: target/release/moonbase-testnet
       PARACHAIN_SPEC_TMP: /tmp/parachain-tmp-specs.json
       PARACHAIN_SPEC_TEMPLATE: specs/moonbase-testnet-parachain-spec-template.json
-      PARACHAIN_SPEC_PLAIN: specs/moonbase-testnet-parachain-spec-plain.json
-      PARACHAIN_SPEC_RAW: specs/moonbase-testnet-parachain-spec-raw.json
-      PARACHAIN_WASM: specs/parachain.wasm
-      PARACHAIN_GENESIS: specs/parachain.genesis
+      PARACHAIN_SPEC_PLAIN: artifacts/parachain-specs-$GITHUB_SHA_SHORT-plain.json
+      PARACHAIN_SPEC_RAW: artifacts/parachain-specs-$GITHUB_SHA_SHORT-raw.json
+      PARACHAIN_WASM: artifacts/parachain-runtime-$GITHUB_SHA_SHORT.wasm
+      PARACHAIN_GENESIS: artifacts/parachain-genesis-$GITHUB_SHA_SHORT.txt
       PARACHAIN_ID: 1000
     steps:
+    - name: Create artifacts folder
+      run: mkdir artifacts
     - uses: actions/checkout@v2
     - name: Submodules
       run: git submodule update --init --recursive
@@ -37,26 +38,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: moonbase-testnet
-        path: $PARACHAIN_BINARY
-    - name: Generate parachain specs and wasm
+        path: target/release/moonbase-testnet
+    - name: Generate parachain specs, wasm and genesis
       run: scripts/generate-specs.sh
-    - name: Upload parachain plain specs
+    - name: Upload artefacts
       uses: actions/upload-artifact@v2
       with:
-        name: parachain-specs-$GITHUB_SHA_SHORT-plain.json
-        path: $PARACHAIN_SPEC_PLAIN
-    - name: Upload parachain raw specs
-      uses: actions/upload-artifact@v2
-      with:
-        name: parachain-specs-$GITHUB_SHA_SHORT-raw.json
-        path: $PARACHAIN_SPEC_RAW
-    - name: Upload runtime wasm
-      uses: actions/upload-artifact@v2
-      with:
-        name: parachain-runtime-$GITHUB_SHA_SHORT.wasm
-        path: $PARACHAIN_WASM
-    - name: Upload runtime genesis
-      uses: actions/upload-artifact@v2
-      with:
-        name: parachain-genesis-$GITHUB_SHA_SHORT.txt
-        path: $PARACHAIN_GENESIS
+        path: artifacts/*
