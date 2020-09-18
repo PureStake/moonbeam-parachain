@@ -606,6 +606,17 @@ impl<T: Trait> Module<T> {
 			.ok_or(Error::<T>::FeeOverflow)?;
 		let total_payment = value.checked_add(total_fee).ok_or(Error::<T>::PaymentOverflow)?;
 		let source_account = Self::account_basic(&source);
+		
+		debug::debug!(
+			target: "evm",
+			"Executing [source: {:?}, nonce: {}, value: {}, gas_limit: {}, account_nonce: {}, account_balance: {}]",
+			source,
+			nonce.unwrap_or_default(),
+			value,
+			gas_limit,
+			source_account.nonce,
+			source_account.balance
+		);
 		ensure!(source_account.balance >= total_payment, Error::<T>::BalanceLow);
 		executor.withdraw(source, total_fee).map_err(|_| Error::<T>::WithdrawFailed)?;
 
