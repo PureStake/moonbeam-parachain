@@ -12,42 +12,51 @@ jobs:
       PARACHAIN_SPEC_TEMPLATE: specs/moonbase-testnet-parachain-spec-template.json
       PARACHAIN_SPEC_PLAIN: specs/moonbase-testnet-parachain-spec-plain.json
       PARACHAIN_SPEC_RAW: specs/moonbase-testnet-parachain-spec-raw.json
+      PARACHAIN_WASM: specs/parachain.wasm
+      PARACHAIN_GENESIS: specs/parachain.genesis
+      PARACHAIN_ID: 1000
     steps:
-    # - uses: actions/checkout@v2
-    # - name: Submodules
-    #   run: git submodule update --init --recursive
-    # - name: Cache Rust dependencies
-    #   uses: actions/cache@v1.1.2
-    #   with:
-    #     path: target
-    #     key: ${{ runner.OS }}-build-${{ hashFiles('**/Cargo.lock') }}
-    #     restore-keys: |
-    #       ${{ runner.OS }}-build-
-    # - uses: actions-rs/toolchain@v1
-    #   with:
-    #     target: wasm32-unknown-unknown
-    #     toolchain: nightly
-    #     default: true
-    # - name: Build
-    #   run: cargo build --release --verbose --all
-    # - name: Upload moonbase-testnet node
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: moonbase-testnet
-    #     path: $PARACHAIN_BINARY
-    - name: Generate parachain specs
-      run: $PARACHAIN_BINARY build-spec --disable-default-bootnode  | grep '"code"' > $PARACHAIN_SPEC_TMP
-    - name: Merging parachain spec template
-      run: sed -e '/"<runtime_code>"/{r $PARACHAIN_SPEC_TMP' -e 'd}'  $PARACHAIN_SPEC_TEMPLATE > $PARACHAIN_SPEC_PLAIN
-    - name: Generate parachain raw
-      run: $PARACHAIN_BINARY build-spec --disable-default-bootnode --raw --chain $PARACHAIN_SPEC_PLAIN > $PARACHAIN_SPEC_RAW
+    - uses: actions/checkout@v2
+    - name: Submodules
+      run: git submodule update --init --recursive
+    - name: Cache Rust dependencies
+      uses: actions/cache@v1.1.2
+      with:
+        path: target
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-
+    - uses: actions-rs/toolchain@v1
+      with:
+        target: wasm32-unknown-unknown
+        toolchain: nightly
+        default: true
+    - name: Build
+      run: cargo build --release --verbose --all
+    - name: Upload moonbase-testnet node
+      uses: actions/upload-artifact@v2
+      with:
+        name: moonbase-testnet
+        path: $PARACHAIN_BINARY
+    - name: Generate parachain specs and wasm
+      run: scripts/generate-specs.sh
     - name: Upload parachain plain specs
       uses: actions/upload-artifact@v2
       with:
         name: parachain-specs-$GITHUB_SHA_SHORT-plain.json
-        path: "specs/moonbase-testnet-parachain-spec-plain.json"
+        path: $PARACHAIN_SPEC_PLAIN
     - name: Upload parachain raw specs
       uses: actions/upload-artifact@v2
       with:
         name: parachain-specs-$GITHUB_SHA_SHORT-raw.json
-        path: "specs/moonbase-testnet-parachain-spec-raw.json"
+        path: $PARACHAIN_SPEC_RAW
+    - name: Upload runtime wasm
+      uses: actions/upload-artifact@v2
+      with:
+        name: parachain-runtime-$GITHUB_SHA_SHORT.wasm
+        path: $PARACHAIN_WASM
+    - name: Upload runtime genesis
+      uses: actions/upload-artifact@v2
+      with:
+        name: parachain-genesis-$GITHUB_SHA_SHORT.txt
+        path: $PARACHAIN_GENESIS
