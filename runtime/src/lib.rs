@@ -34,8 +34,8 @@ pub use pallet_timestamp::Call as TimestampCall;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
-use frame_ethereum::{Block as EthereumBlock, Transaction as EthereumTransaction, Receipt as EthereumReceipt};
-use frame_evm::{Account as EVMAccount, FeeCalculator, HashedAddressMapping, EnsureAddressTruncated};
+use ethereum::{Block as EthereumBlock, Transaction as EthereumTransaction, Receipt as EthereumReceipt};
+use pallet_evm::{Account as EVMAccount, FeeCalculator, HashedAddressMapping, EnsureAddressTruncated};
 use frontier_rpc_primitives::{TransactionStatus};
 
 /// Import the template pallet.
@@ -266,10 +266,10 @@ impl FeeCalculator for FixedGasPrice {
 }
 
 parameter_types! {
-	pub const ChainId: u64 = 42;
+	pub const ChainId: u64 = 43;
 }
 
-impl frame_evm::Trait for Runtime {
+impl pallet_evm::Trait for Runtime {
 	type FeeCalculator = FixedGasPrice;
 	type CallOrigin = EnsureAddressTruncated;
 	type WithdrawOrigin = EnsureAddressTruncated;
@@ -283,14 +283,14 @@ impl frame_evm::Trait for Runtime {
 pub struct TransactionConverter;
 
 impl frontier_rpc_primitives::ConvertTransaction<UncheckedExtrinsic> for TransactionConverter {
-	fn convert_transaction(&self, transaction: frame_ethereum::Transaction) -> UncheckedExtrinsic {
-		UncheckedExtrinsic::new_unsigned(frame_ethereum::Call::<Runtime>::transact(transaction).into())
+	fn convert_transaction(&self, transaction: ethereum::Transaction) -> UncheckedExtrinsic {
+		UncheckedExtrinsic::new_unsigned(ethereum::Call::<Runtime>::transact(transaction).into())
 	}
 }
 
 impl frontier_rpc_primitives::ConvertTransaction<opaque::UncheckedExtrinsic> for TransactionConverter {
-	fn convert_transaction(&self, transaction: frame_ethereum::Transaction) -> opaque::UncheckedExtrinsic {
-		let extrinsic = UncheckedExtrinsic::new_unsigned(frame_ethereum::Call::<Runtime>::transact(transaction).into());
+	fn convert_transaction(&self, transaction: ethereum::Transaction) -> opaque::UncheckedExtrinsic {
+		let extrinsic = UncheckedExtrinsic::new_unsigned(ethereum::Call::<Runtime>::transact(transaction).into());
 		let encoded = extrinsic.encode();
 		opaque::UncheckedExtrinsic::decode(&mut &encoded[..]).expect("Encoded extrinsic is always valid")
 	}
@@ -317,7 +317,7 @@ impl FindAuthor<u32> for PhantomAura {
 	}
 }
 
-impl frame_ethereum::Trait for Runtime {
+impl ethereum::Trait for Runtime {
 	type Event = Event;
 	type FindAuthor = EthereumFindAuthor<PhantomAura>;
 }
@@ -339,8 +339,8 @@ construct_runtime! {
 		ParachainInfo: parachain_info::{Module, Storage, Config},
 		TokenDealer: cumulus_token_dealer::{Module, Call, Event<T>},
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
-		EVM: frame_evm::{Module, Config, Call, Storage, Event<T>},
-		Ethereum: frame_ethereum::{Module, Call, Storage, Event, Config, ValidateUnsigned},
+		EVM: pallet_evm::{Module, Config, Call, Storage, Event<T>},
+		Ethereum: ethereum::{Module, Call, Storage, Event, Config, ValidateUnsigned},
 	}
 }
 
@@ -472,7 +472,7 @@ impl_runtime_apis! {
 		}
 
 		fn author() -> H160 {
-			<frame_ethereum::Module<Runtime>>::find_author()
+			<ethereum::Module<Runtime>>::find_author()
 		}
 
 		fn storage_at(address: H160, index: U256) -> H256 {
@@ -488,30 +488,34 @@ impl_runtime_apis! {
 			gas_limit: U256,
 			gas_price: Option<U256>,
 			nonce: Option<U256>,
-			action: frame_ethereum::TransactionAction,
-		) -> Option<(Vec<u8>, U256)> {
+			action: ethereum::TransactionAction,
+		) -> Result<(Vec<u8>, U256), sp_runtime::DispatchError> {
 			match action {
-				frame_ethereum::TransactionAction::Call(to) =>
+				ethereum::TransactionAction::Call(to) =>
 					EVM::execute_call(
 						from,
 						to,
 						data,
 						value,
 						gas_limit.low_u32(),
-						gas_price.unwrap(),
+						gas_price,
 						nonce,
 						false,
-					).ok().map(|(_, ret, gas)| (ret, gas)),
-				frame_ethereum::TransactionAction::Create =>
+					)
+					.map(|(_, ret, gas)| (ret, gas))
+					.map_err(|err| err.into()),
+				ethereum::TransactionAction::Create =>
 					EVM::execute_create(
 						from,
 						data,
 						value,
 						gas_limit.low_u32(),
-						gas_price.unwrap(),
+						gas_price,
 						nonce,
 						false,
-					).ok().map(|(_, _, gas)| (vec![], gas)),
+					)
+					.map(|(_, _, gas)| (vec![], gas))
+					.map_err(|err| err.into()),
 			}
 		}
 
@@ -519,11 +523,11 @@ impl_runtime_apis! {
 			Ethereum::current_transaction_statuses()
 		}
 
-		fn current_block() -> Option<frame_ethereum::Block> {
+		fn current_block() -> Option<ethereum::Block> {
 			Ethereum::current_block()
 		}
 
-		fn current_receipts() -> Option<Vec<frame_ethereum::Receipt>> {
+		fn current_receipts() -> Option<Vec<ethereum::Receipt>> {
 			Ethereum::current_receipts()
 		}
 	}

@@ -127,9 +127,9 @@ fn testnet_genesis(
 		}),
 		pallet_sudo: Some(SudoConfig { key: root_key }),
 		parachain_info: Some(ParachainInfoConfig { parachain_id: id }),
-		frame_evm: Some(EVMConfig {
+		pallet_evm: Some(EVMConfig {
 			accounts: BTreeMap::new(),
 		}),
-		frame_ethereum: Some(EthereumConfig {}),
+		ethereum: Some(EthereumConfig {}),
 	}
 }

@@ -59,7 +59,7 @@ pallet-transaction-payment-rpc = { git = "https://github.com/paritytech/substrat
 sp-block-builder = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 sc-consensus-manual-seal = { git = "https://github.com/paritytech/substrate", branch = "rococo-branch" }
 
-evm = { version = "2.0.0-dev", package = "pallet-evm", path = "../vendor/frontier/vendor/substrate/frame/evm" }
+evm = { package = "pallet-evm", path = "../pallets/evm" }
 ethereum = { version = "0.1.0", package = "pallet-ethereum", path = "../vendor/frontier/frame/ethereum" }
 
 frontier-rpc = { version = "0.1.0", path = "../vendor/frontier/rpc" }
@@ -67,11 +67,11 @@ frontier-rpc-primitives = { version = "0.1.0", path = "../vendor/frontier/rpc/pr
 frontier-consensus = { version = "0.1.0", path = "../vendor/frontier/consensus" }
 
 # Cumulus dependencies
-cumulus-consensus = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-collator = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-network = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-primitives = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
-cumulus-service = { git = "https://github.com/paritytech/cumulus", rev = '96da14c14fb785e106bb89a18c9dedaf2f789d2c' }
+cumulus-consensus = { path = "../cumulus/consensus" }
+cumulus-collator = { git = "https://github.com/paritytech/cumulus", rev = '8a445a425086fc927f946a72b245e829fba200d0' }
+cumulus-network = { git = "https://github.com/paritytech/cumulus", rev = '8a445a425086fc927f946a72b245e829fba200d0' }
+cumulus-primitives = { git = "https://github.com/paritytech/cumulus", rev = '8a445a425086fc927f946a72b245e829fba200d0' }
+cumulus-service = { git = "https://github.com/paritytech/cumulus", rev = '8a445a425086fc927f946a72b245e829fba200d0' }
 
 # Polkadot dependencies
 polkadot-primitives = { git = "https://github.com/paritytech/polkadot", branch = "rococo-branch" }
