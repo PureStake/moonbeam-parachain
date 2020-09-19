@@ -32,14 +32,14 @@ jobs:
         mkdir -p artifacts;
         scripts/generate-specs.sh
       env:
-        PARACHAIN_BINARY=target/release/moonbase-testnet 
-        PARACHAIN_SPEC_TMP=/tmp/parachain-tmp-specs.json 
-        PARACHAIN_SPEC_TEMPLATE=specs/moonbase-testnet-parachain-spec-template.json 
-        PARACHAIN_SPEC_PLAIN=artifacts/parachain-specs-${{ steps.vars.outputs.sha_short }}-plain.json 
-        PARACHAIN_SPEC_RAW=artifacts/parachain-specs-${{ steps.vars.outputs.sha_short }}-raw.json 
-        PARACHAIN_WASM=artifacts/parachain-runtime-${{ steps.vars.outputs.sha_short }}.wasm 
-        PARACHAIN_GENESIS=artifacts/parachain-genesis-${{ steps.vars.outputs.sha_short }}.txt 
-        PARACHAIN_ID=1000 
+        PARACHAIN_BINARY: target/release/moonbase-testnet 
+        PARACHAIN_SPEC_TMP: /tmp/parachain-tmp-specs.json 
+        PARACHAIN_SPEC_TEMPLATE: specs/moonbase-testnet-parachain-spec-template.json 
+        PARACHAIN_SPEC_PLAIN: artifacts/parachain-specs-${{ steps.vars.outputs.sha_short }}-plain.json 
+        PARACHAIN_SPEC_RAW: artifacts/parachain-specs-${{ steps.vars.outputs.sha_short }}-raw.json 
+        PARACHAIN_WASM: artifacts/parachain-runtime-${{ steps.vars.outputs.sha_short }}.wasm 
+        PARACHAIN_GENESIS: artifacts/parachain-genesis-${{ steps.vars.outputs.sha_short }}.txt 
+        PARACHAIN_ID: 1000 
     - name: Upload moonbase-testnet node
       uses: actions/upload-artifact@v2
       with:
