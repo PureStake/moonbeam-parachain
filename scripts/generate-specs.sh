@@ -36,7 +36,7 @@ echo $PARACHAIN_SPEC_TMP
 $PARACHAIN_BINARY build-spec --disable-default-bootnode  | grep '\"code\"' > $PARACHAIN_SPEC_TMP
 
 echo ${PARACHAIN_SPEC_TEMPLATE}
-sed -e '/\"<runtime_code>\"/{r /tmp/parachain.wasm' -e 'd}'  $PARACHAIN_SPEC_TEMPLATE > $PARACHAIN_SPEC_PLAIN
+sed -e "/\"<runtime_code>\"/{r $PARACHAIN_SPEC_TMP" -e 'd}'  $PARACHAIN_SPEC_TEMPLATE > $PARACHAIN_SPEC_PLAIN
 echo $PARACHAIN_SPEC_PLAIN generated
 
 $PARACHAIN_BINARY build-spec --disable-default-bootnode --raw --chain $PARACHAIN_SPEC_PLAIN > $PARACHAIN_SPEC_RAW
