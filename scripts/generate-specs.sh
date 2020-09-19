@@ -32,8 +32,6 @@ if [ -z "$PARACHAIN_ID" ]; then
     PARACHAIN_ID=1000
 fi
 
-env
-
 echo $PARACHAIN_SPEC_TMP
 $PARACHAIN_BINARY build-spec --disable-default-bootnode  | grep '\"code\"' > $PARACHAIN_SPEC_TMP
 
