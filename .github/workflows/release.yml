@@ -23,15 +23,27 @@ jobs:
         default: true
     - name: Build
       run: cargo build --release --verbose --all
+    - name: Generate parachain specs, wasm and genesis
+      run: 
+        mkdir -p artifacts; PARACHAIN_BINARY=target/release/moonbase-testnet PARACHAIN_SPEC_TMP=/tmp/parachain-tmp-specs.json PARACHAIN_SPEC_TEMPLATE=specs/moonbase-testnet-parachain-spec-template.json PARACHAIN_SPEC_PLAIN=artifacts/parachain-specs-${GITHUB_SHA::8}-plain.json PARACHAIN_SPEC_RAW=artifacts/parachain-specs-${GITHUB_SHA::8}-raw.json PARACHAIN_WASM=artifacts/parachain-runtime-${GITHUB_SHA::8}.wasm PARACHAIN_GENESIS=artifacts/parachain-genesis-${GITHUB_SHA::8}.txt PARACHAIN_ID=1000 scripts/generate-specs.sh
     - name: Upload moonbase-testnet node
       uses: actions/upload-artifact@v2
       with:
         name: moonbase-testnet
         path: target/release/moonbase-testnet
-    - name: Generate parachain specs, wasm and genesis
-      run: 
-        mkdir -p artifacts; PARACHAIN_BINARY=target/release/moonbase-testnet PARACHAIN_SPEC_TMP=/tmp/parachain-tmp-specs.json PARACHAIN_SPEC_TEMPLATE=specs/moonbase-testnet-parachain-spec-template.json PARACHAIN_SPEC_PLAIN=artifacts/parachain-specs-${GITHUB_SHA::8}-plain.json PARACHAIN_SPEC_RAW=artifacts/parachain-specs-${GITHUB_SHA::8}-raw.json PARACHAIN_WASM=artifacts/parachain-runtime-${GITHUB_SHA::8}.wasm PARACHAIN_GENESIS=artifacts/parachain-genesis-${GITHUB_SHA::8}.txt PARACHAIN_ID=1000 scripts/generate-specs.sh
-    - name: Upload artefacts
+    - name: Upload parachain spec plain
       uses: actions/upload-artifact@v2
       with:
-        path: artifacts/*
+        path: artifacts/parachain-specs-${GITHUB_SHA::8}-plain.json
+    - name: Upload parachain spec raw
+      uses: actions/upload-artifact@v2
+      with:
+        path: artifacts/parachain-specs-${GITHUB_SHA::8}-raw.json
+    - name: Upload parachain wasm
+      uses: actions/upload-artifact@v2
+      with:
+        path: artifacts/parachain-runtime-${GITHUB_SHA::8}.wasm
+    - name: Upload parachain genesis state
+      uses: actions/upload-artifact@v2
+      with:
+        path: artifacts/parachain-genesis-${GITHUB_SHA::8}.txt
