@@ -1,0 +1,67 @@
+name: Publish draft release
+
+on: ["push"]
+
+jobs:
+  build-runtimes:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Submodules
+      run: git submodule update --init --recursive
+    - name: get shortsha
+      id: vars
+      run: |
+        echo ::set-output name=sha_short::$(git rev-parse --short=4 ${{ github.sha }})
+    - name: Cache Rust dependencies
+      uses: actions/cache@v1.1.2
+      with:
+        path: target
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-
+    - uses: actions-rs/toolchain@v1
+      with:
+        target: wasm32-unknown-unknown
+        toolchain: nightly
+        default: true
+    - name: Build
+      run: cargo build --release --verbose --all
+    - name: Generate parachain specs, wasm and genesis
+      run: |
+        mkdir -p artifacts;
+        scripts/generate-specs.sh
+      env:
+        PARACHAIN_BINARY: target/release/moonbase-testnet 
+        PARACHAIN_SPEC_TMP: /tmp/parachain-tmp-specs.json 
+        PARACHAIN_SPEC_TEMPLATE: specs/moonbase-testnet-parachain-spec-template.json 
+        PARACHAIN_SPEC_PLAIN: artifacts/parachain-specs-${{ steps.vars.outputs.sha_short }}-plain.json 
+        PARACHAIN_SPEC_RAW: artifacts/parachain-specs-${{ steps.vars.outputs.sha_short }}-raw.json 
+        PARACHAIN_WASM: artifacts/parachain-runtime-${{ steps.vars.outputs.sha_short }}.wasm 
+        PARACHAIN_GENESIS: artifacts/parachain-genesis-${{ steps.vars.outputs.sha_short }}.txt 
+        PARACHAIN_ID: 1000 
+    - name: Upload moonbase-testnet node
+      uses: actions/upload-artifact@v2
+      with:
+        name: moonbase-testnet-${{ steps.vars.outputs.sha_short }}
+        path: target/release/moonbase-testnet
+    - name: Upload parachain spec plain
+      uses: actions/upload-artifact@v2
+      with:
+        name: parachain-specs-${{ steps.vars.outputs.sha_short }}-plain.json
+        path: artifacts/parachain-specs-${{ steps.vars.outputs.sha_short }}-plain.json
+    - name: Upload parachain spec raw
+      uses: actions/upload-artifact@v2
+      with:
+        name: parachain-specs-${{ steps.vars.outputs.sha_short }}-raw.json
+        path: artifacts/parachain-specs-${{ steps.vars.outputs.sha_short }}-raw.json
+    - name: Upload parachain wasm
+      uses: actions/upload-artifact@v2
+      with:
+        name: parachain-runtime-${{ steps.vars.outputs.sha_short }}.wasm
+        path: artifacts/parachain-runtime-${{ steps.vars.outputs.sha_short }}.wasm
+    - name: Upload parachain genesis state
+      uses: actions/upload-artifact@v2
+      with:
+        name: parachain-genesis-${{ steps.vars.outputs.sha_short }}.txt
+        path: artifacts/parachain-genesis-${{ steps.vars.outputs.sha_short }}.txt
