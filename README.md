@@ -32,7 +32,7 @@ relay/polkadot --chain specs/rococo-moonbeam-spec-raw.json \
   --port 55042 \
   --rpc-port 55043 \
   --ws-port 55044 \
-  --alice \
+  --bob \
   '-linfo,evm=trace,ethereum=trace,rpc=trace'
 ```
 
