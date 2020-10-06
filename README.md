@@ -1,11 +1,15 @@
-Those are the steps to reproduce it.
+This branch contains the code and steps to reproduce the issue reported at https://github.com/paritytech/cumulus/issues/219
+
 The scenario requires:
-* 2 polkadot node for the relay
+* 2 polkadot validators for the relay chain
 * 1 collator for the parachain
-* multiple parachain node (no --validator)
+* multiple non-collating parachain nodes (no `--validator`)
+
 
  For simplicity, the relay node and specs are already compiled (linux) and included in the branch.
  (otherwise clone polkadot@26f1fa47 and `cargo build --release` it )
+
+TODO: Providing only a raw spec makes it impossible to see who the relay chain validators are.
 
 
 ## Building the relay
@@ -28,7 +32,7 @@ relay/polkadot --chain specs/rococo-moonbeam-spec-raw.json \
   --port 55042 \
   --rpc-port 55043 \
   --ws-port 55044 \
-  --charlie \
+  --bob \
   '-linfo,evm=trace,ethereum=trace,rpc=trace'
 ```
 
@@ -49,6 +53,7 @@ relay/polkadot --chain specs/rococo-moonbeam-spec-raw.json \
 
 First you need to build it
 ```
+git submodule update --init --recursive
 cargo build --release
 ```
 
@@ -178,6 +183,6 @@ node_modules/.bin/polkadot-js-api \
 ### Running the tests
 From within the `tools` folder
 
-`node moonbeam_test/testscript.js `
+`node moonbeam_test/testscript.js`
 
 In order to reproduce the bug, you need to keep running this script, until one of the node fails.
